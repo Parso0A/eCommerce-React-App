@@ -66,7 +66,11 @@ const Search = () => {
         <div className="input-group-prepend">
           <select
             className={"btn mr-2"}
-            style={{ marginRight: "10px" }}
+            style={{
+              marginRight: "10px",
+              borderColor: "lightgray",
+              borderRadius: "0.12rem",
+            }}
             onChange={handleChange("selectedCategory")}
           >
             <option value="All">All</option>

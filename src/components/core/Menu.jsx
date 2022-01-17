@@ -6,6 +6,8 @@ import {
   authenticate,
 } from "../../services/auth/authService";
 
+import { totalCartQuantity } from "../../services/cartService";
+
 const isActive = (location, path) => {
   if (location.pathname === path) {
     return { color: "#ff9900" };
@@ -45,6 +47,20 @@ const Menu = ({ location, navigate }) => {
             Shop
           </Link>
         </li>
+
+        <li className="nav-item">
+          <Link
+            className="nav-link"
+            style={isActive(location, "/cart")}
+            to="/cart"
+          >
+            Cart
+            <sup>
+              <small className="cart-badge">{totalCartQuantity()}</small>
+            </sup>
+          </Link>
+        </li>
+
         {authenticated &&
           (authenticated.user.role === 1 ? (
             <li className="nav-item">

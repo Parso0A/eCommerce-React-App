@@ -9,6 +9,8 @@ import AdminDashboard from "./components/admin/AdminDashboard";
 import AddCategory from "./components/admin/AddCategory";
 import AddProduct from "./components/admin/AddProduct";
 import Shop from "./components/core/Shop";
+import Product from "./components/core/Product";
+import Cart from "./components/core/Cart";
 
 const AppRoutes = () => {
   return (
@@ -21,11 +23,13 @@ const AppRoutes = () => {
         <Route element={<RequireAuths />}>
           <Route path="/user/dashboard" exact element={<Dashboard />} />
         </Route>
+        <Route path="/cart" exact element={<Cart />} />
         <Route element={<RequireAuths role={1} />}>
           <Route path="/admin/dashboard" exact element={<AdminDashboard />} />
           <Route path="/create/category" exact element={<AddCategory />} />
           <Route path="/create/product" exact element={<AddProduct />} />
         </Route>
+        <Route path="/product/:productId" exact element={<Product />} />
       </Routes>
     </BrowserRouter>
   );

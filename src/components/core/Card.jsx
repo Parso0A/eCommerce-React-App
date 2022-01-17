@@ -1,23 +1,119 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import CardImage from "./CardImage";
+import moment from "moment";
+import { addItem } from "../../services/cartService";
+import { Navigate } from "react-router";
+import {
+  updateItemInCart,
+  removeItemFromCart,
+} from "../../services/cartService";
 
-const Card = ({ product }) => {
-  return (
-    <div className="col-4 mb-3 text-center">
-      <div className="card">
-        <div className="card-header">{product.name}</div>
-        <div className="card-body">
-          <CardImage item={product} url={"product"} />
-          <p>{product.description.substring(0, 100)}</p>
-          <p>${product.price}</p>
-          <Link to={"/"}>
-            <button className="btn btn-outline-primary m-2">
-              View Product
-            </button>
-          </Link>
-          <button className="btn btn-outline-warning m-2 ">Add to cart</button>
+const Card = ({
+  product,
+  showViewProductButton = true,
+  shouldViewAddToCart = true,
+  cartUpdate = false,
+  showRemoveProductButton = false,
+  onCartItemChangeCallback = () => {},
+}) => {
+  const [redirect, setRedirect] = useState(false);
+
+  const [count, setCount] = useState(product.count ?? 0);
+
+  const viewProductButton = showViewProductButton && (
+    <Link to={`/product/${product._id}`}>
+      <button className="btn btn-outline-primary m-2">View Product</button>
+    </Link>
+  );
+
+  const addToCart = () => [
+    addItem(product, () => {
+      setRedirect(true);
+    }),
+  ];
+
+  const shouldRedirect = (redirect) => {
+    if (redirect) {
+      return <Navigate to={"/cart"} />;
+    }
+  };
+
+  const addToCartButton = shouldViewAddToCart ? (
+    <button onClick={addToCart} className="btn btn-outline-warning m-2 ">
+      Add to cart
+    </button>
+  ) : (
+    ""
+  );
+
+  const showStock = (productQuantity) =>
+    productQuantity > 0 ? (
+      <span className="badge bg-primary rounded-pill">In Stock</span>
+    ) : (
+      <span className="badge bg-danger rounded-pill">Out of Stock</span>
+    );
+
+  const handleQuantityChange = (productId) => (event) => {
+    setCount(event.target.value < 1 ? 1 : event.target.value);
+
+    if (event.target.value >= 1) {
+      updateItemInCart(productId, event.target.value);
+      onCartItemChangeCallback();
+    }
+  };
+
+  const cartUpdateOptions = (cartUpdate) =>
+    cartUpdate && (
+      <div>
+        <div className="input-group mb3">
+          <div className="input-group-prepend">
+            <span className="input-group-text">Adjust Quantity</span>
+          </div>
+          <input
+            type="number"
+            className="form-control"
+            value={count}
+            onChange={handleQuantityChange(product._id)}
+          />
         </div>
+      </div>
+    );
+
+  const handleRemoveFromCart = (productId) => {
+    removeItemFromCart(product._id);
+    onCartItemChangeCallback();
+  };
+
+  const removeProductButton = (showRemoveProductButton) =>
+    showRemoveProductButton && (
+      <button
+        className="btn btn-outline-danger mt-2 mb-2"
+        onClick={() => handleRemoveFromCart(product._id)}
+      >
+        Remove from Cart
+      </button>
+    );
+
+  return (
+    <div className="card">
+      <div className="card-header name">{product.name}</div>
+      <div className="card-body">
+        {shouldRedirect(redirect)}
+        <CardImage item={product} url={"product"} />
+        <p className="lead mt-2">{product.description.substring(0, 100)}</p>
+        <p className="black-10">${product.price}</p>
+        <p className="black-9">
+          Category: {product.category && product.category.name}
+        </p>
+        <p className="black-8">
+          Added on: {moment(product.createdAt).fromNow()}
+        </p>
+        {showStock(product.quantity)}
+        {viewProductButton}
+        {addToCartButton}
+        {removeProductButton(showRemoveProductButton)}
+        {cartUpdateOptions(cartUpdate)}
       </div>
     </div>
   );
