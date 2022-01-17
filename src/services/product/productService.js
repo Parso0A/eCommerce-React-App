@@ -1,4 +1,5 @@
 import { API } from "../../config";
+import queryString from "query-string";
 
 export const createProduct = (userId, token, product) => {
   return fetch(`${API}/product/create/${userId}`, {
@@ -41,3 +42,13 @@ export const getFilteredProducts = (skip, limit, filters = {}) => {
     .then((response) => response.json())
     .catch((err) => console.log(err));
 };
+
+export const getMainPageProducts = params => {
+  const query = queryString.stringify(params)
+
+  return fetch(`${API}/products/search?${query}`, {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .catch((err) => console.log(err)); 
+}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import { getProducts } from "../../services/product/productService";
 import Card from "./Card";
+import Search from "./Search";
 
 const Home = () => {
   const [productsbySale, setProductsBySale] = useState([]);
@@ -41,6 +42,7 @@ const Home = () => {
       description="E-Commerce"
       className={"container-fluid"}
     >
+      <Search />
       <h2 className="mb-4 text-center">New Arrivals</h2>
       <div className="row">
         {productsByArrival.map((item, idx) => (
