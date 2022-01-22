@@ -1,6 +1,5 @@
 import React from "react";
 import Layout from "../core/Layout";
-import { isAuthenticated } from "../../services/auth/authService";
 import { Link } from "react-router-dom";
 import { selectUser } from "../../store/auth";
 import { useSelector } from "react-redux";
