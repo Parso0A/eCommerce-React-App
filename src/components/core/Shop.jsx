@@ -1,25 +1,30 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import Card from "./Card";
-import { getCategories } from "../../services/category/categoryService";
 import CheckBox from "./CheckBox";
 import { prices } from "../../services/common/fixedPrices";
 import RadioBox from "./RadioBox";
 import {
   getFilteredProducts,
-  getProducts,
-} from "../../services/product/productService";
+  selectFilteredProducts,
+  setFilter,
+  selectTotalCount,
+} from "../../store/products";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCategories, getCategories } from "../../store/categories";
 
 const Shop = () => {
-  const [categories, setCategories] = useState([]);
+  const dispatch = useDispatch();
+
+  const categories = useSelector(selectCategories);
+
+  const products = useSelector(selectFilteredProducts);
+
+  const totalCount = useSelector(selectTotalCount);
 
   const [limit, setLimit] = useState(3);
 
   const [skip, setSkip] = useState(0);
-
-  const [size, setSize] = useState(0);
-
-  const [products, setProducts] = useState([]);
 
   const [categoryFilters, setCategoryFilters] = useState({
     filters: {
@@ -31,14 +36,8 @@ const Shop = () => {
   const [error, setError] = useState(false);
 
   const init = () => {
-    getCategories().then((data) => {
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setCategories(data);
-      }
-    });
-
+    dispatch(getCategories());
+    dispatch(setFilter({}));
     loadFilteredResults({});
   };
 
@@ -48,11 +47,15 @@ const Shop = () => {
 
   const handleFilters = (filters, filterBy) => {
     const newFilters = { ...categoryFilters };
+
     newFilters.filters[filterBy] = filters;
 
     if (filterBy === "price") {
       newFilters.filters[filterBy] = handlePrice(filters);
     }
+    dispatch(setFilter(newFilters));
+
+    setSkip(0);
 
     loadFilteredResults(categoryFilters.filters);
 
@@ -64,37 +67,19 @@ const Shop = () => {
   };
 
   const loadFilteredResults = (newFilters) => {
-    getFilteredProducts(skip, limit, newFilters).then((data) => {
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setProducts(data.data);
-
-        setSize(data.size);
-
-        setSkip(0);
-      }
-    });
+    dispatch(getFilteredProducts(0, limit, newFilters));
   };
 
   const loadMore = () => {
-    let toSkip = skip + limit;
+    const toSkip = skip + limit;
 
-    getFilteredProducts(toSkip, limit, categoryFilters).then((data) => {
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setProducts([...products, ...data.data]);
+    dispatch(getFilteredProducts(toSkip, limit, categoryFilters.filters));
 
-        setSize(data.size);
-
-        setSkip(toSkip);
-      }
-    });
+    setSkip(toSkip);
   };
 
   const loadMoreButton =
-    size > 0 && size >= limit ? (
+    products && totalCount > products.length ? (
       <div className="text-center">
         <button className="btn btn-warning mb-5" onClick={loadMore}>
           Load More

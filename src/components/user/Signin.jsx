@@ -1,12 +1,9 @@
 import React from "react";
 import { useState } from "react/cjs/react.development";
 import Layout from "../core/Layout";
-import {
-  authenticate,
-  isAuthenticated,
-  signIn,
-} from "../../services/auth/authService";
 import { Navigate } from "react-router";
+import { signIn, selectUser } from "../../store/auth";
+import { useDispatch, useSelector } from "react-redux";
 
 const Signin = () => {
   const [values, setValues] = useState({
@@ -19,7 +16,8 @@ const Signin = () => {
 
   const { email, password, error, loading, redirectToReferrer } = values;
 
-  const { user } = isAuthenticated();
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
@@ -30,18 +28,8 @@ const Signin = () => {
 
     setValues({ ...values, error: false, loading: true });
 
-    signIn({ email, password }).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error, loading: false });
-      } else {
-        authenticate(data, () =>
-          setValues({
-            ...values,
-            redirectToReferrer: true,
-          })
-        );
-      }
-    });
+    dispatch(signIn({ email, password }));
+    setValues({ ...values, loading: false, redirectToReferrer: true });
   };
 
   const signInForm = (
@@ -98,7 +86,7 @@ const Signin = () => {
       );
     }
 
-    if (isAuthenticated()) {
+    if (user._id) {
       return <Navigate to={"/"} />;
     }
   };

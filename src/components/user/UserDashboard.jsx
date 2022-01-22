@@ -2,11 +2,11 @@ import React from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../../services/auth/authService";
 import { Link } from "react-router-dom";
+import { selectUser } from "../../store/auth";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
-  const {
-    user: { _id, name, email, role },
-  } = isAuthenticated();
+  const { _id, name, email, role } = useSelector(selectUser);
 
   const userLinks = (
     <div className="card">
@@ -15,11 +15,6 @@ const Dashboard = () => {
         <li className="list-group-item">
           <Link className="nav-link" to={"/cart"}>
             My Cart
-          </Link>
-        </li>
-        <li className="list-group-item">
-          <Link className="nav-link" to={"/profile/update"}>
-            Update Profile
           </Link>
         </li>
       </ul>

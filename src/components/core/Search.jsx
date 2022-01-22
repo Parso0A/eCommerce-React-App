@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { getCategories } from "../../services/category/categoryService";
-import { getMainPageProducts } from "../../services/product/productService";
 import Card from "./Card";
-
+import { useSelector, useDispatch } from "react-redux";
+import { getCategories, selectCategories } from "../../store/categories";
+import {
+  getMainPageProducts,
+  selectMainPageProducts,
+} from "../../store/products";
 const Search = () => {
   const [data, setData] = useState({
-    categories: [],
     selectedCategory: "",
     searchTerm: "",
-    result: [],
     searched: false,
   });
 
-  const { categories, selectedCategory, searchTerm, result, searched } = data;
+  const { selectedCategory, searchTerm, searched } = data;
+
+  const dispatch = useDispatch();
+
+  const categories = useSelector(selectCategories);
 
   const loadCategories = () => {
-    getCategories().then((cats) => {
-      if (cats.error) {
-        console.log(cats.error);
-      } else {
-        setData({ ...data, categories: cats });
-      }
-    });
+    dispatch(getCategories());
   };
+
+  const result = useSelector(selectMainPageProducts);
 
   useEffect(() => {
     loadCategories();
@@ -30,16 +31,14 @@ const Search = () => {
 
   const searchData = () => {
     if (!searched) {
-      getMainPageProducts({
-        search: searchTerm || undefined,
-        category: selectedCategory,
-      }).then((res) => {
-        if (res.error) {
-          console.log(res.error);
-        } else {
-          setData({ ...data, result: res, searched: true });
-        }
-      });
+      dispatch(
+        getMainPageProducts({
+          search: searchTerm || undefined,
+          category: selectedCategory,
+        })
+      );
+
+      setData({ ...data, searched: true });
     }
   };
 

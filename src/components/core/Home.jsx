@@ -1,39 +1,26 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
-import { getProducts } from "../../services/product/productService";
 import Card from "./Card";
+import { useDispatch, useSelector } from "react-redux";
 import Search from "./Search";
+import {
+  selectProductsBySale,
+  getProductsBySale,
+  selectProductsByArrival,
+  getProductsByArrival,
+} from "../../store/products";
 
 const Home = () => {
-  const [productsbySale, setProductsBySale] = useState([]);
+  const dispatch = useDispatch();
 
-  const [productsByArrival, setProductsByArrival] = useState([]);
+  const productsBySale = useSelector(selectProductsBySale);
+  const productsByArrival = useSelector(selectProductsByArrival);
 
   const [error, setError] = useState(false);
 
-  const loadProductsBySale = () => {
-    getProducts("sell").then((data) => {
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setProductsBySale(data);
-      }
-    });
-  };
-
-  const loadProductsByArrival = () => {
-    getProducts("createdAt").then((data) => {
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setProductsByArrival(data);
-      }
-    });
-  };
-
   useEffect(() => {
-    loadProductsBySale();
-    loadProductsByArrival();
+    dispatch(getProductsBySale());
+    dispatch(getProductsByArrival());
   }, []);
 
   return (
@@ -54,7 +41,7 @@ const Home = () => {
 
       <h2 className="mb-4 text-center">Best Sellers</h2>
       <div className="row">
-        {productsbySale.map((item, idx) => (
+        {productsBySale.map((item, idx) => (
           <div key={item._id} className="col-4 mb-3">
             <Card product={item}></Card>
           </div>

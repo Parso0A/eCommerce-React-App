@@ -2,17 +2,22 @@ import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../../services/auth/authService";
 import { Link } from "react-router-dom";
-import { createProduct } from "../../services/product/productService";
-import { getCategories } from "../../services/category/categoryService";
+import { selectUser } from "../../store/auth";
+import { getCategories, selectCategories } from "../../store/categories";
+import { createProduct } from "../../store/products";
+import { useSelector, useDispatch } from "react-redux";
 
 const AddProduct = () => {
-  const { user, token } = isAuthenticated();
+  const user = useSelector(selectUser);
+
+  const categories = useSelector(selectCategories);
+
+  const dispatch = useDispatch();
 
   const [values, setValues] = useState({
     name: "",
     description: "",
     price: "",
-    categories: [],
     category: "",
     shipping: "",
     quantity: "",
@@ -28,7 +33,6 @@ const AddProduct = () => {
     name,
     description,
     price,
-    categories,
     category,
     shipping,
     quantity,
@@ -40,13 +44,7 @@ const AddProduct = () => {
   } = values;
 
   const init = () => {
-    getCategories().then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
-        setValues({ ...values, categories: data, formData: new FormData() });
-      }
-    });
+    dispatch(getCategories());
   };
 
   useEffect(() => {
@@ -66,22 +64,36 @@ const AddProduct = () => {
 
     setValues({ ...values, error: "", loading: true });
 
-    createProduct(user._id, token, formData).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error, loading: false });
-      } else {
-        setValues({
-          ...values,
-          name: "",
-          description: "",
-          photo: "",
-          price: "",
-          quantity: "",
-          loading: false,
-          createdProduct: data.name,
-          error: "",
-        });
-      }
+    // createProduct(user._id, token, formData).then((data) => {
+    //   if (data.error) {
+    //     setValues({ ...values, error: data.error, loading: false });
+    //   } else {
+    //     setValues({
+    //       ...values,
+    //       name: "",
+    //       description: "",
+    //       photo: "",
+    //       price: "",
+    //       quantity: "",
+    //       loading: false,
+    //       createdProduct: data.name,
+    //       error: "",
+    //     });
+    //   }
+    // });
+
+    dispatch(createProduct(formData, user._id));
+
+    setValues({
+      ...values,
+      name: "",
+      description: "",
+      photo: "",
+      price: "",
+      quantity: "",
+      loading: false,
+      createdProduct: name,
+      error: "",
     });
   };
 

@@ -1,20 +1,20 @@
 import React from "react";
-import { isAuthenticated } from "../../services/auth/authService";
 import { Navigate } from "react-router-dom";
 import { Outlet } from "react-router";
+import { selectUser } from "../../store/auth";
+import { useSelector } from "react-redux";
 
-const handleAuthorization = (role) => {
+const handleAuthorization = (user, role) => {
   if (role === 0) {
     return <Outlet />;
   }
 
-  return isAuthenticated().user.role === role ? (
-    <Outlet />
-  ) : (
-    <Navigate to={"/"} />
-  );
+  return user.role === role ? <Outlet /> : <Navigate to={"/"} />;
 };
 
-const RequireAuths = ({ role = 0 }) =>
-  isAuthenticated() ? handleAuthorization(role) : <Navigate to={"/signin"} />;
+const RequireAuths = ({ role = 0 }) => {
+  const user = useSelector(selectUser);
+
+  return user ? handleAuthorization(user, role) : <Navigate to={"/signin"} />;
+};
 export default RequireAuths;

@@ -1,12 +1,9 @@
 import React, { Fragment } from "react";
 import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
-import {
-  signOut,
-  isAuthenticated,
-  authenticate,
-} from "../../services/auth/authService";
-
-import { totalCartQuantity } from "../../services/cartService";
+import { selectUser } from "../../store/auth";
+import { useSelector, useDispatch } from "react-redux";
+import { signOut } from "../../store/auth";
+import { selectCartItems } from "../../store/cart";
 
 const isActive = (location, path) => {
   if (location.pathname === path) {
@@ -28,7 +25,10 @@ const withRouter = (Component) => {
 };
 
 const Menu = ({ location, navigate }) => {
-  const authenticated = isAuthenticated();
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+
+  const items = useSelector(selectCartItems);
 
   return (
     <div>
@@ -56,13 +56,13 @@ const Menu = ({ location, navigate }) => {
           >
             Cart
             <sup>
-              <small className="cart-badge">{totalCartQuantity()}</small>
+              <small className="cart-badge">{items.length}</small>
             </sup>
           </Link>
         </li>
 
-        {authenticated &&
-          (authenticated.user.role === 1 ? (
+        {user._id &&
+          (user.role === 1 ? (
             <li className="nav-item">
               <Link
                 className="nav-link"
@@ -84,7 +84,7 @@ const Menu = ({ location, navigate }) => {
             </li>
           ))}
 
-        {!authenticated && (
+        {!user._id && (
           <Fragment>
             <li className="nav-item">
               <Link
@@ -108,13 +108,14 @@ const Menu = ({ location, navigate }) => {
           </Fragment>
         )}
 
-        {authenticated && (
+        {user._id && (
           <li>
             <span
               className="nav-link"
               style={{ cursor: "pointer", color: "#ffffff" }}
               onClick={() => {
-                signOut(navigate("/"));
+                dispatch(signOut());
+                navigate("/");
               }}
             >
               Sign Out

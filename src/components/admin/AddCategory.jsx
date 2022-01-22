@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../../services/auth/authService";
 import { Link } from "react-router-dom";
-import { createCategory } from "../../services/category/categoryService";
+import { useDispatch, useSelector } from "react-redux";
+import { createCategory } from "../../store/categories";
+import { selectUser } from "../../store/auth";
 
 const AddCategory = () => {
   const [name, setName] = useState("");
@@ -11,7 +13,9 @@ const AddCategory = () => {
 
   const [success, setSuccess] = useState(false);
 
-  const { user, token } = isAuthenticated();
+  const user = useSelector(selectUser);
+
+  const dispatch = useDispatch();
 
   const handleChanges = (event) => {
     setError("");
@@ -26,15 +30,17 @@ const AddCategory = () => {
 
     setSuccess(false);
 
-    createCategory(user._id, token, { name }).then((data) => {
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setError("");
-        setSuccess(true);
-        setName("");
-      }
-    });
+    // createCategory(user._id, token, { name }).then((data) => {
+    //   if (data.error) {
+    //     setError(data.error);
+    //   } else {
+    //     setError("");
+    //     setSuccess(true);
+    //     setName("");
+    //   }
+    // });
+
+    dispatch(createCategory({ name }, user._id));
   };
 
   const showSuccess = success ? (
