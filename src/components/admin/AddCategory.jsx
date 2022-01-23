@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../../services/auth/authService";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createCategory } from "../../store/categories";
 
 const AddCategory = () => {

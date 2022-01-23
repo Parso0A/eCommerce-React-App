@@ -1,7 +1,7 @@
 import { API } from "../../config";
-import queryString from "query-string";
+import { Product } from "../../interfaces";
 
-export const getProduct = (productId) => {
+export const getProduct = (productId: string): Promise<Product> => {
   return fetch(`${API}/product/${productId}`, {
     method: "GET",
   })
@@ -9,7 +9,9 @@ export const getProduct = (productId) => {
     .catch((err) => console.log(err));
 };
 
-export const getRelatedProducts = (productId) => {
+export const getRelatedProducts = (
+  productId: string
+): Promise<Array<Product>> => {
   return fetch(`${API}/products/related/${productId}`, {
     method: "GET",
   })

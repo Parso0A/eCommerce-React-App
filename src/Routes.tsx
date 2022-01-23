@@ -16,20 +16,20 @@ const AppRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/signin" exact element={<Signin />}></Route>
-        <Route path="/signup" exact element={<Signup />}></Route>
-        <Route path="/" exact element={<Home />}></Route>
-        <Route path="/shop" exact element={<Shop />}></Route>
+        <Route path="/signin" element={<Signin />}></Route>
+        <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/" element={<Home />}></Route>
+        <Route path="/shop" element={<Shop />}></Route>
         <Route element={<RequireAuths />}>
-          <Route path="/user/dashboard" exact element={<Dashboard />} />
+          <Route path="/user/dashboard" element={<Dashboard />} />
         </Route>
-        <Route path="/cart" exact element={<Cart />} />
+        <Route path="/cart" element={<Cart />} />
         <Route element={<RequireAuths role={1} />}>
-          <Route path="/admin/dashboard" exact element={<AdminDashboard />} />
-          <Route path="/create/category" exact element={<AddCategory />} />
-          <Route path="/create/product" exact element={<AddProduct />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/create/category" element={<AddCategory />} />
+          <Route path="/create/product" element={<AddProduct />} />
         </Route>
-        <Route path="/product/:productId" exact element={<Product />} />
+        <Route path="/product/:productId" element={<Product />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import * as apiActions from "../../store/api";
 import * as env from "../../config";
 import { isAuthenticated } from "../../services/auth/authService";
@@ -16,23 +16,23 @@ const api =
     next(action);
 
     try {
-      const requestConfig = {
+      const requestConfig: AxiosRequestConfig = {
         baseURL: env.API,
         url,
         method,
         data,
       };
 
-      if (isAuthenticated().token) {
+      if (isAuthenticated()?.token ?? false) {
         requestConfig.headers = {
-          Authorization: `Bearer ${isAuthenticated().token}`,
+          Authorization: `Bearer ${isAuthenticated()!.token}`,
         };
       }
 
       const response = await axios.request(requestConfig);
 
       dispatch({ type: onSuccess, payload: response.data });
-    } catch (error) {
+    } catch (error: any) {
       dispatch(apiActions.apiRequestFail(error.message));
 
       if (onError) {

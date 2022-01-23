@@ -1,6 +1,13 @@
-import { createAction, createSelector, createSlice } from "@reduxjs/toolkit";
+import {
+  createAction,
+  createSelector,
+  createSlice,
+  PayloadAction,
+  Selector,
+} from "@reduxjs/toolkit";
 import { apiRequest, apiRequestFail } from "./api";
 import queryString from "query-string";
+import { FilterProductsPayload, ICreateProduct, Product } from "../interfaces";
 
 const slice = createSlice({
   name: "products",
@@ -19,13 +26,16 @@ const slice = createSlice({
     list: [],
   },
   reducers: {
-    productsBySale: (state, action) => {
+    productsBySale: (state: any, action: PayloadAction<Array<Product>>) => {
       state.bySale = action.payload;
     },
-    productsByArrival: (state, action) => {
+    productsByArrival: (state: any, action: PayloadAction<Array<Product>>) => {
       state.byArrival = action.payload;
     },
-    productsFiltered: (state, action) => {
+    productsFiltered: (
+      state: any,
+      action: PayloadAction<FilterProductsPayload>
+    ) => {
       if (state.filteredProducts.shouldReload) {
         state.filteredProducts.data = action.payload.data;
       } else {
@@ -34,10 +44,10 @@ const slice = createSlice({
       state.filteredProducts.shouldReload = false;
       state.filteredProducts.totalCount = action.payload.totalCount;
     },
-    productsReceived: (state, action) => {
+    productsReceived: (state: any, action: PayloadAction<Array<Product>>) => {
       state.list = action.payload;
     },
-    productCreated: (state, action) => {
+    productCreated: (state: any, action: PayloadAction<Product>) => {
       state.list.push(action.payload);
     },
     filtersSet: (state, action) => {
@@ -58,36 +68,29 @@ const {
 
 export default slice.reducer;
 
-export const getProductsBySale = () =>
-  apiRequest({
-    url: `/products?sortBy=sell&order=desc&limit=6`,
-    method: "GET",
-    onSuccess: productsBySale.type,
-  });
-
-export const selectProductsBySale = createSelector(
-  (state) => state.entities.products.bySale,
-  (products) => products
+export const selectProductsBySale: Selector<Array<Product>> = createSelector(
+  (state: any) => state.entities.products.bySale,
+  (products: Array<Product>) => products
 );
 
-export const selectTotalCount = createSelector(
-  (state) => state.entities.products.filteredProducts.totalCount,
-  (totalCount) => totalCount
+export const selectTotalCount: Selector<number> = createSelector(
+  (state: any) => state.entities.products.filteredProducts.totalCount,
+  (totalCount: number) => totalCount
 );
 
-export const selectProductsByArrival = createSelector(
-  (state) => state.entities.products.byArrival,
-  (products) => products
+export const selectProductsByArrival: Selector<Array<Product>> = createSelector(
+  (state: any) => state.entities.products.byArrival,
+  (products: Array<Product>) => products
 );
 
-export const selectFilteredProducts = createSelector(
-  (state) => state.entities.products.filteredProducts.data,
-  (products) => products
+export const selectFilteredProducts: Selector<Array<Product>> = createSelector(
+  (state: any) => state.entities.products.filteredProducts.data,
+  (products: Array<Product>) => products
 );
 
-export const selectMainPageProducts = createSelector(
-  (state) => state.entities.products.list,
-  (products) => products
+export const selectMainPageProducts: Selector<Array<Product>> = createSelector(
+  (state: any) => state.entities.products.list,
+  (products: Array<Product>) => products
 );
 
 export const getProductsByArrival = () =>
@@ -97,7 +100,11 @@ export const getProductsByArrival = () =>
     onSuccess: productsByArrival.type,
   });
 
-export const getFilteredProducts = (skip, limit, filters = {}) => {
+export const getFilteredProducts = (
+  skip: number,
+  limit: number,
+  filters = {}
+) => {
   const data = {
     skip,
     limit,
@@ -112,7 +119,7 @@ export const getFilteredProducts = (skip, limit, filters = {}) => {
   });
 };
 
-export const getMainPageProducts = (params) => {
+export const getMainPageProducts = (params: any) => {
   const query = queryString.stringify(params);
 
   return apiRequest({
@@ -122,12 +129,19 @@ export const getMainPageProducts = (params) => {
   });
 };
 
-export const createProduct = (product, userId) =>
+export const createProduct = (product: ICreateProduct, userId: string) =>
   apiRequest({
     url: `/product/create/${userId}`,
     method: "POST",
     data: product,
     onSuccess: productCreated.type,
+  });
+
+export const getProductsBySale = () =>
+  apiRequest({
+    url: `/products?sortBy=sell&order=desc&limit=6`,
+    method: "GET",
+    onSuccess: productsBySale.type,
   });
 
 export const setFilter = createAction(filtersSet.type, (filters) => ({

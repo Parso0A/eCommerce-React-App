@@ -1,4 +1,6 @@
-export const prices = [
+import { PriceFilterItem } from "../../interfaces";
+
+export const prices: Array<PriceFilterItem> = [
   {
     _id: 0,
     name: "Any",

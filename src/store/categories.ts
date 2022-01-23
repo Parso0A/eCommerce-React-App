@@ -1,4 +1,13 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
+import {
+  ActionCreatorWithoutPayload,
+  ActionCreatorWithPayload,
+  CaseReducer,
+  createSelector,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
+import { State } from "history";
+import { ApiRequestPayload, Category } from "../interfaces";
 import { apiRequest } from "./api";
 
 const slice = createSlice({
@@ -8,16 +17,19 @@ const slice = createSlice({
     loading: false,
   },
   reducers: {
-    categoryCreated: (state, action) => {
+    categoryCreated: (state: any, action: PayloadAction<Category>) => {
       state.list.push(action.payload);
     },
-    categoriesRequested: (state, action) => {
+    categoriesRequested: (state: any, action) => {
       state.loading = true;
     },
-    categoriesRequestFailed: (state, action) => {
+    categoriesRequestFailed: (state: any, action) => {
       state.loading = false;
     },
-    categoriesReceived: (state, action) => {
+    categoriesReceived: (
+      state: any,
+      action: PayloadAction<Array<Category>>
+    ) => {
       state.loading = false;
       state.list = action.payload;
     },
@@ -38,7 +50,7 @@ export const selectCategories = createSelector(
   (categories) => categories
 );
 
-export const createCategory = (category, userId) =>
+export const createCategory = (category: Category, userId: string) =>
   apiRequest({
     url: `/category/create/${userId}`,
     method: "POST",

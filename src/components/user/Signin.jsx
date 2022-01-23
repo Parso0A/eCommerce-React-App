@@ -17,7 +17,7 @@ const Signin = () => {
     redirectToReferrer: false,
   });
 
-  const { user } = isAuthenticated();
+  const { user } = isAuthenticated() ?? {};
 
   const { email, password, error, loading, redirectToReferrer } = values;
 
