@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { API } from "../../config";
 import Layout from "../core/Layout";
 import { Link } from "react-router-dom";
-import { signUp } from "../../services/auth/authService";
+import { isAuthenticated, signUp } from "../../services/auth/authService";
 import { Navigate } from "react-router";
-import { selectUser } from "../../store/auth";
-import { useSelector } from "react-redux";
 
 const Signup = () => {
   const [values, setValues] = useState({
@@ -15,8 +13,6 @@ const Signup = () => {
     error: "",
     success: false,
   });
-
-  const user = useSelector(selectUser);
 
   const { name, email, password, error, success } = values;
 
@@ -46,7 +42,7 @@ const Signup = () => {
 
   const signUpForm = (
     <form>
-      {user._id && <Navigate to={"/"} />}
+      {isAuthenticated() && <Navigate to={"/"} />}
       <div className="form-group">
         <label className="text-muted">Name</label>
         <input

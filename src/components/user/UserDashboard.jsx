@@ -1,11 +1,12 @@
 import React from "react";
 import Layout from "../core/Layout";
 import { Link } from "react-router-dom";
-import { selectUser } from "../../store/auth";
-import { useSelector } from "react-redux";
+import { isAuthenticated } from "../../services/auth/authService";
 
 const Dashboard = () => {
-  const { _id, name, email, role } = useSelector(selectUser);
+  const {
+    user: { _id, name, email, role },
+  } = isAuthenticated();
 
   const userLinks = (
     <div className="card">

@@ -4,7 +4,6 @@ import { isAuthenticated } from "../../services/auth/authService";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { createCategory } from "../../store/categories";
-import { selectUser } from "../../store/auth";
 
 const AddCategory = () => {
   const [name, setName] = useState("");
@@ -13,7 +12,7 @@ const AddCategory = () => {
 
   const [success, setSuccess] = useState(false);
 
-  const user = useSelector(selectUser);
+  const { user, token } = isAuthenticated();
 
   const dispatch = useDispatch();
 

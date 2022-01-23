@@ -1,9 +1,11 @@
 import React, { Fragment } from "react";
 import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
-import { selectUser } from "../../store/auth";
-import { useSelector, useDispatch } from "react-redux";
-import { signOut } from "../../store/auth";
-import { selectCartItems } from "../../store/cart";
+import {
+  isAuthenticated,
+  authenticate,
+  signOut,
+} from "../../services/auth/authService";
+import { totalCartQuantity } from "../../services/cart/cartService";
 
 const isActive = (location, path) => {
   if (location.pathname === path) {
@@ -25,10 +27,7 @@ const withRouter = (Component) => {
 };
 
 const Menu = ({ location, navigate }) => {
-  const user = useSelector(selectUser);
-  const dispatch = useDispatch();
-
-  const items = useSelector(selectCartItems);
+  const authenticated = isAuthenticated();
 
   return (
     <div>
@@ -56,13 +55,13 @@ const Menu = ({ location, navigate }) => {
           >
             Cart
             <sup>
-              <small className="cart-badge">{items.length}</small>
+              <small className="cart-badge">{totalCartQuantity()}</small>
             </sup>
           </Link>
         </li>
 
-        {user._id &&
-          (user.role === 1 ? (
+        {authenticated &&
+          (authenticated.user.role === 1 ? (
             <li className="nav-item">
               <Link
                 className="nav-link"
@@ -84,7 +83,7 @@ const Menu = ({ location, navigate }) => {
             </li>
           ))}
 
-        {!user._id && (
+        {!authenticated && (
           <Fragment>
             <li className="nav-item">
               <Link
@@ -108,14 +107,13 @@ const Menu = ({ location, navigate }) => {
           </Fragment>
         )}
 
-        {user._id && (
+        {authenticated && (
           <li>
             <span
               className="nav-link"
               style={{ cursor: "pointer", color: "#ffffff" }}
               onClick={() => {
-                dispatch(signOut());
-                navigate("/");
+                signOut(navigate("/"));
               }}
             >
               Sign Out

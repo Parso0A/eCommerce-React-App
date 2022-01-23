@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../../services/auth/authService";
 import { Link } from "react-router-dom";
-import { selectUser } from "../../store/auth";
 import { getCategories, selectCategories } from "../../store/categories";
 import { createProduct } from "../../store/products";
 import { useSelector, useDispatch } from "react-redux";
 
 const AddProduct = () => {
-  const user = useSelector(selectUser);
+  const { user } = isAuthenticated();
 
   const categories = useSelector(selectCategories);
 

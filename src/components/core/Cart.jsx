@@ -4,23 +4,20 @@ import Card from "./Card";
 import { Link } from "react-router-dom";
 import Checkout from "./Checkout";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  selectCartItems,
-  addItem,
-  updateItem,
-  removeItem,
-} from "../../store/cart";
+import { getCartItems } from "../../services/cart/cartService";
 
 const Cart = () => {
   const dispatch = useDispatch();
 
-  const items = useSelector(selectCartItems);
-
-  const [shouldReloadItems, setShouldReloadItems] = useState(false);
+  const [items, setItems] = useState([]);
 
   const reloadItems = () => {
-    setShouldReloadItems(false);
+    setItems(getCartItems());
   };
+
+  useEffect(() => {
+    reloadItems();
+  }, []);
 
   const showCartItems = (items) => (
     <div>

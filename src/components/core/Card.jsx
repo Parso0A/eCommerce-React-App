@@ -3,8 +3,11 @@ import { Link } from "react-router-dom";
 import CardImage from "./CardImage";
 import moment from "moment";
 import { Navigate } from "react-router";
-import { updateItem, removeItem, addItem } from "../../store/cart";
-import { useDispatch } from "react-redux";
+import {
+  addItem,
+  updateItemInCart,
+  removeItemFromCart,
+} from "../../services/cart/cartService";
 
 const Card = ({
   product,
@@ -18,8 +21,6 @@ const Card = ({
 
   const [count, setCount] = useState(product.count ?? 0);
 
-  const dispatch = useDispatch();
-
   const viewProductButton = showViewProductButton && (
     <Link to={`/product/${product._id}`}>
       <button className="btn btn-outline-primary m-2">View Product</button>
@@ -27,7 +28,9 @@ const Card = ({
   );
 
   const addToCart = () => {
-    dispatch(addItem(product));
+    addItem(product, () => {
+      setRedirect(true);
+    });
   };
   const shouldRedirect = (redirect) => {
     if (redirect) {
@@ -54,7 +57,7 @@ const Card = ({
     setCount(event.target.value < 1 ? 1 : event.target.value);
 
     if (event.target.value >= 1) {
-      dispatch(updateItem(productId, event.target.value));
+      updateItemInCart(productId, event.target.value);
       onCartItemChangeCallback();
     }
   };
@@ -76,8 +79,8 @@ const Card = ({
       </div>
     );
 
-  const handleRemoveFromCart = (productId) => {
-    dispatch(removeItem(product._id));
+  const handleRemoveFromCart = () => {
+    removeItemFromCart(product._id);
     onCartItemChangeCallback();
   };
 
@@ -85,7 +88,7 @@ const Card = ({
     showRemoveProductButton && (
       <button
         className="btn btn-outline-danger mt-2 mb-2"
-        onClick={() => handleRemoveFromCart(product._id)}
+        onClick={() => handleRemoveFromCart()}
       >
         Remove from Cart
       </button>

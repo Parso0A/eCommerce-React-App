@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as apiActions from "../../store/api";
 import * as env from "../../config";
+import { isAuthenticated } from "../../services/auth/authService";
 
 const api =
   ({ dispatch, getState }) =>
@@ -22,9 +23,9 @@ const api =
         data,
       };
 
-      if (getState().auth.token) {
+      if (isAuthenticated().token) {
         requestConfig.headers = {
-          Authorization: `Bearer ${getState().auth.token}`,
+          Authorization: `Bearer ${isAuthenticated().token}`,
         };
       }
 
