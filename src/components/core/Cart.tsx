@@ -4,7 +4,7 @@ import Card from "./Card";
 import { Link } from "react-router-dom";
 import Checkout from "./Checkout";
 import { getCartItems } from "../../services/cart/cartService";
-import { ProductInCart } from "../../interfaces";
+import { ProductInCart } from "../../global/models/product/product";
 
 const Cart = () => {
   const [items, setItems] = useState<Array<ProductInCart>>([]);

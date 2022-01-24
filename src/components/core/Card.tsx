@@ -8,7 +8,7 @@ import {
   updateItemInCart,
   removeItemFromCart,
 } from "../../services/cart/cartService";
-import { Product, ProductInCart } from "../../interfaces";
+import { Product, ProductInCart } from "../../global/models/product/product";
 
 interface CardProps {
   product: Product | ProductInCart;

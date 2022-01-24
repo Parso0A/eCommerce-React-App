@@ -4,7 +4,7 @@ import Card from "./Card";
 import { getProduct } from "../../services/product/productService";
 import { useParams } from "react-router";
 import { getRelatedProducts } from "../../services/product/productService";
-import { Product as IProduct } from "../../interfaces";
+import { Product as IProduct } from "../../global/models/product/product";
 
 const Product = () => {
   const [product, setProduct] = useState<IProduct>();

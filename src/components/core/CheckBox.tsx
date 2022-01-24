@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Category } from "../../interfaces";
+import { Category } from "../../global/models/category/category";
 
 interface CheckBoxProps {
   categories: Array<Category>;

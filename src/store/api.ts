@@ -1,5 +1,5 @@
 import { ActionCreatorWithPayload, createAction } from "@reduxjs/toolkit";
-import { ApiRequestPayload } from "../interfaces";
+import { ApiRequestPayload } from "../global/models/common/common";
 
 export const apiRequest: ActionCreatorWithPayload<ApiRequestPayload> =
   createAction("apiRequest");

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { PriceFilterItem } from "../../interfaces";
+import { PriceFilterItem } from "../../global/models/common/common";
 
 interface RadioBoxProps {
   prices: Array<PriceFilterItem>;

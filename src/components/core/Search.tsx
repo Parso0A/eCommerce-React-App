@@ -6,7 +6,7 @@ import {
   getMainPageProducts,
   selectMainPageProducts,
 } from "../../store/products";
-import { Product } from "../../interfaces";
+import { Product } from "../../global/models/product/product";
 
 interface SearchFormState {
   selectedCategory: string;

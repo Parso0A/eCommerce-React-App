@@ -6,7 +6,11 @@ import {
 } from "@reduxjs/toolkit";
 import { apiRequest } from "./api";
 import queryString from "query-string";
-import { FilterProductsPayload, IRootState, Product } from "../interfaces";
+import {
+  FilterProductsPayload,
+  Product,
+} from "../global/models/product/product";
+import { IRootState } from "../global/models/common/store";
 
 const slice = createSlice({
   name: "products",

@@ -1,5 +1,9 @@
 import { API } from "../../config";
-import { Auth, AuthenticationContext, IRegister, User } from "../../interfaces";
+import {
+  Auth,
+  AuthenticationContext,
+  IRegister,
+} from "../../global/models/user/user";
 
 export const signUp = (user: IRegister) => {
   return fetch(`${API}/signup`, {

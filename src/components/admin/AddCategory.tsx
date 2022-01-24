@@ -32,6 +32,8 @@ const AddCategory = () => {
     setSuccess(false);
 
     dispatch(createCategory({ name }, user._id));
+
+    setSuccess(true);
   };
 
   const handleFocus = () => {

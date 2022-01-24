@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ProductInCart } from "../../interfaces";
+import { ProductInCart } from "../../global/models/product/product";
 
 interface CheckoutProps {
   products: Array<ProductInCart>;

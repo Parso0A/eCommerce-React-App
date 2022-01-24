@@ -1,5 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Category, ICreateCategory, IRootState } from "../interfaces";
+import { Category, ICreateCategory } from "../global/models/category/category";
+import { IRootState } from "../global/models/common/store";
 import { apiRequest } from "./api";
 
 const slice = createSlice({

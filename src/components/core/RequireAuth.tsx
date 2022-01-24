@@ -3,10 +3,6 @@ import { Navigate } from "react-router-dom";
 import { Outlet } from "react-router";
 import { isAuthenticated } from "../../services/auth/authService";
 
-interface RequireAuthsProps {
-  role: number;
-}
-
 const handleAuthorization = (role: number) => {
   if (role === 0) {
     return <Outlet />;

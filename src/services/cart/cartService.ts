@@ -1,4 +1,4 @@
-import { Product, ProductInCart } from "../../interfaces";
+import { Product, ProductInCart } from "../../global/models/product/product";
 
 export const addItem = (item: Product, next: Function) => {
   let cart: Array<ProductInCart> = [];

@@ -1,5 +1,5 @@
 import { API } from "../../config";
-import { Product } from "../../interfaces";
+import { Product } from "../../global/models/product/product";
 
 export const getProduct = (productId: string): Promise<Product> => {
   return fetch(`${API}/product/${productId}`, {

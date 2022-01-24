@@ -1,6 +1,6 @@
 import React from "react";
 import { API } from "../../config";
-import { Product } from "../../interfaces";
+import { Product } from "../../global/models/product/product";
 
 interface CardImageProps {
   item: Product;

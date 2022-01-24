@@ -1,4 +1,4 @@
-import { PriceFilterItem } from "../../interfaces";
+import { PriceFilterItem } from "../../global/models/common/common";
 
 export const prices: Array<PriceFilterItem> = [
   {
