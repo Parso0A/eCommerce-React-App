@@ -3,13 +3,11 @@ import Layout from "./Layout";
 import Card from "./Card";
 import { Link } from "react-router-dom";
 import Checkout from "./Checkout";
-import { useSelector, useDispatch } from "react-redux";
 import { getCartItems } from "../../services/cart/cartService";
+import { ProductInCart } from "../../interfaces";
 
 const Cart = () => {
-  const dispatch = useDispatch();
-
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<Array<ProductInCart>>([]);
 
   const reloadItems = () => {
     setItems(getCartItems());
@@ -19,7 +17,7 @@ const Cart = () => {
     reloadItems();
   }, []);
 
-  const showCartItems = (items) => (
+  const showCartItems = (items: Array<ProductInCart>) => (
     <div>
       <h2>Your Cart Has {`${items.length}`} Item(s)</h2>
       <hr />

@@ -1,31 +1,45 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../../services/auth/authService";
-import { Link } from "react-router-dom";
 import { getCategories, selectCategories } from "../../store/categories";
 import { createProduct } from "../../store/products";
 import { useSelector, useDispatch } from "react-redux";
 
+interface AddProductState {
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  shipping: boolean;
+  quantity: number;
+  photo: any;
+  loading: boolean;
+  error: string | null;
+  createdProduct: string;
+  redirectToProfile: boolean;
+  formData: FormData;
+}
+
 const AddProduct = () => {
-  const { user } = isAuthenticated();
+  const { user } = isAuthenticated()!;
 
   const categories = useSelector(selectCategories);
 
   const dispatch = useDispatch();
 
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<AddProductState>({
     name: "",
     description: "",
-    price: "",
+    price: 0,
     category: "",
-    shipping: "",
-    quantity: "",
+    shipping: false,
+    quantity: 0,
     photo: "",
     loading: false,
     error: "",
     createdProduct: "",
     redirectToProfile: false,
-    formData: "",
+    formData: new FormData(),
   });
 
   const {
@@ -63,24 +77,6 @@ const AddProduct = () => {
 
     setValues({ ...values, error: "", loading: true });
 
-    // createProduct(user._id, token, formData).then((data) => {
-    //   if (data.error) {
-    //     setValues({ ...values, error: data.error, loading: false });
-    //   } else {
-    //     setValues({
-    //       ...values,
-    //       name: "",
-    //       description: "",
-    //       photo: "",
-    //       price: "",
-    //       quantity: "",
-    //       loading: false,
-    //       createdProduct: data.name,
-    //       error: "",
-    //     });
-    //   }
-    // });
-
     dispatch(createProduct(formData, user._id));
 
     setValues({
@@ -88,8 +84,8 @@ const AddProduct = () => {
       name: "",
       description: "",
       photo: "",
-      price: "",
-      quantity: "",
+      price: 0,
+      quantity: 0,
       loading: false,
       createdProduct: name,
       error: "",

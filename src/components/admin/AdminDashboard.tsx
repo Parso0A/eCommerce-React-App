@@ -1,27 +1,33 @@
 import React from "react";
 import Layout from "../core/Layout";
-import { Link } from "react-router-dom";
 import { isAuthenticated } from "../../services/auth/authService";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const Dashboard = () => {
+const AdminDashboard = () => {
   const {
     user: { _id, name, email, role },
-  } = isAuthenticated();
+  } = isAuthenticated()!;
 
-  const userLinks = (
+  const adminLinks = (
     <div className="card">
-      <h4 className="card-header">User Links</h4>
+      <h4 className="card-header">Admin Links</h4>
       <ul className="list-group">
         <li className="list-group-item">
-          <Link className="nav-link" to={"/cart"}>
-            My Cart
+          <Link className="nav-link" to={"/create/category"}>
+            Create Category
+          </Link>
+        </li>
+        <li className="list-group-item">
+          <Link className="nav-link" to={"/create/product"}>
+            Create Product
           </Link>
         </li>
       </ul>
     </div>
   );
 
-  const userInfo = (
+  const adminInfo = (
     <div className="card mb-5 ">
       <h3 className="card-header">User Information</h3>
       <ul className="list-group">
@@ -50,9 +56,9 @@ const Dashboard = () => {
       className={"container text-center"}
     >
       <div className="row">
-        <div className="col-md-3">{userLinks}</div>
+        <div className="col-md-3">{adminLinks}</div>
         <div className="col-md-9">
-          {userInfo}
+          {adminInfo}
           {purchaseHistory}
         </div>
       </div>
@@ -60,4 +66,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;

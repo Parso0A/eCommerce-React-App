@@ -6,13 +6,13 @@ import { useDispatch } from "react-redux";
 import { createCategory } from "../../store/categories";
 
 const AddCategory = () => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState<string>("");
 
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
-  const { user, token } = isAuthenticated();
+  const { user } = isAuthenticated()!;
 
   const dispatch = useDispatch();
 
@@ -28,16 +28,6 @@ const AddCategory = () => {
     setError("");
 
     setSuccess(false);
-
-    // createCategory(user._id, token, { name }).then((data) => {
-    //   if (data.error) {
-    //     setError(data.error);
-    //   } else {
-    //     setError("");
-    //     setSuccess(true);
-    //     setName("");
-    //   }
-    // });
 
     dispatch(createCategory({ name }, user._id));
   };

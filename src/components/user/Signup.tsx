@@ -1,12 +1,19 @@
 import React, { useState } from "react";
-import { API } from "../../config";
 import Layout from "../core/Layout";
 import { Link } from "react-router-dom";
 import { isAuthenticated, signUp } from "../../services/auth/authService";
 import { Navigate } from "react-router";
 
+interface SignUpState {
+  name: string;
+  email: string;
+  password: string;
+  error: string | null;
+  success: boolean;
+}
+
 const Signup = () => {
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<SignUpState>({
     name: "",
     email: "",
     password: "",
@@ -16,13 +23,13 @@ const Signup = () => {
 
   const { name, email, password, error, success } = values;
 
-  const handleChange = (name) => (event) => {
-    setValues({ ...values, error: false, [name]: event.target.value });
+  const handleChange = (name: string) => (event) => {
+    setValues({ ...values, error: null, [name]: event.target.value });
   };
 
   const clickSubmit = (event) => {
     event.preventDefault();
-    setValues({ ...values, error: false });
+    setValues({ ...values, error: null });
 
     signUp({ name, email, password }).then((data) => {
       if (data.error) {

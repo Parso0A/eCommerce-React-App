@@ -8,6 +8,16 @@ import {
   updateItemInCart,
   removeItemFromCart,
 } from "../../services/cart/cartService";
+import { Product, ProductInCart } from "../../interfaces";
+
+interface CardProps {
+  product: Product | ProductInCart;
+  showViewProductButton?: boolean;
+  shouldViewAddToCart?: boolean;
+  cartUpdate?: boolean;
+  showRemoveProductButton?: boolean;
+  onCartItemChangeCallback?: Function;
+}
 
 const Card = ({
   product,
@@ -16,10 +26,12 @@ const Card = ({
   cartUpdate = false,
   showRemoveProductButton = false,
   onCartItemChangeCallback = () => {},
-}) => {
-  const [redirect, setRedirect] = useState(false);
+}: CardProps) => {
+  const [redirect, setRedirect] = useState<boolean>(false);
 
-  const [count, setCount] = useState(product.count ?? 0);
+  const [count, setCount] = useState<number>(
+    (product as ProductInCart)?.count ?? 0
+  );
 
   const viewProductButton = showViewProductButton && (
     <Link to={`/product/${product._id}`}>
@@ -32,7 +44,7 @@ const Card = ({
       setRedirect(true);
     });
   };
-  const shouldRedirect = (redirect) => {
+  const shouldRedirect = (redirect: boolean) => {
     if (redirect) {
       return <Navigate to={"/cart"} />;
     }
@@ -62,7 +74,7 @@ const Card = ({
     }
   };
 
-  const cartUpdateOptions = (cartUpdate) =>
+  const cartUpdateOptions = (cartUpdate: boolean) =>
     cartUpdate && (
       <div>
         <div className="input-group mb3">
@@ -84,7 +96,7 @@ const Card = ({
     onCartItemChangeCallback();
   };
 
-  const removeProductButton = (showRemoveProductButton) =>
+  const removeProductButton = (showRemoveProductButton: boolean) =>
     showRemoveProductButton && (
       <button
         className="btn btn-outline-danger mt-2 mb-2"

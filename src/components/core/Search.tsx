@@ -6,8 +6,16 @@ import {
   getMainPageProducts,
   selectMainPageProducts,
 } from "../../store/products";
+import { Product } from "../../interfaces";
+
+interface SearchFormState {
+  selectedCategory: string;
+  searchTerm: string;
+  searched: boolean;
+}
+
 const Search = () => {
-  const [data, setData] = useState({
+  const [data, setData] = useState<SearchFormState>({
     selectedCategory: "",
     searchTerm: "",
     searched: false,
@@ -47,11 +55,11 @@ const Search = () => {
     searchData();
   };
 
-  const handleChange = (name) => (event) => {
+  const handleChange = (name: string) => (event) => {
     setData({ ...data, [name]: event.target.value, searched: false });
   };
 
-  const searchMessage = (hasSearched, results) => {
+  const searchMessage = (hasSearched: boolean, results: Array<Product>) => {
     if (hasSearched && results.length > 0) {
       return `Found ${results.length} Product(s)`;
     } else if (hasSearched) {
@@ -96,12 +104,14 @@ const Search = () => {
     </form>
   );
 
-  const searchedProducts = (results = []) => (
+  const searchedProducts = (results: Array<Product> = []) => (
     <div>
       <h2 className="mt-4 mb-4">{searchMessage(searched, results)}</h2>
       <div className="row">
         {result.map((item, idx) => (
-          <Card product={item} key={item._id} />
+          <div key={item._id} className="col-4 mb-3">
+            <Card product={item} />
+          </div>
         ))}
       </div>
     </div>

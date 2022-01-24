@@ -7,7 +7,7 @@ import {
 } from "@reduxjs/toolkit";
 import { apiRequest, apiRequestFail } from "./api";
 import queryString from "query-string";
-import { FilterProductsPayload, ICreateProduct, Product } from "../interfaces";
+import { FilterProductsPayload, IRootState, Product } from "../interfaces";
 
 const slice = createSlice({
   name: "products",
@@ -68,28 +68,28 @@ const {
 
 export default slice.reducer;
 
-export const selectProductsBySale: Selector<Array<Product>> = createSelector(
-  (state: any) => state.entities.products.bySale,
+export const selectProductsBySale = createSelector(
+  (state: IRootState) => state.entities.products.bySale,
   (products: Array<Product>) => products
 );
 
-export const selectTotalCount: Selector<number> = createSelector(
-  (state: any) => state.entities.products.filteredProducts.totalCount,
+export const selectTotalCount = createSelector(
+  (state: IRootState) => state.entities.products.filteredProducts.totalCount,
   (totalCount: number) => totalCount
 );
 
-export const selectProductsByArrival: Selector<Array<Product>> = createSelector(
-  (state: any) => state.entities.products.byArrival,
+export const selectProductsByArrival = createSelector(
+  (state: IRootState) => state.entities.products.byArrival,
   (products: Array<Product>) => products
 );
 
-export const selectFilteredProducts: Selector<Array<Product>> = createSelector(
-  (state: any) => state.entities.products.filteredProducts.data,
+export const selectFilteredProducts = createSelector(
+  (state: IRootState) => state.entities.products.filteredProducts.data,
   (products: Array<Product>) => products
 );
 
-export const selectMainPageProducts: Selector<Array<Product>> = createSelector(
-  (state: any) => state.entities.products.list,
+export const selectMainPageProducts = createSelector(
+  (state: IRootState) => state.entities.products.list,
   (products: Array<Product>) => products
 );
 
@@ -129,7 +129,7 @@ export const getMainPageProducts = (params: any) => {
   });
 };
 
-export const createProduct = (product: ICreateProduct, userId: string) =>
+export const createProduct = (product: FormData, userId: string) =>
   apiRequest({
     url: `/product/create/${userId}`,
     method: "POST",

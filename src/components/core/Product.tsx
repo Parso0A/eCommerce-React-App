@@ -4,15 +4,16 @@ import Card from "./Card";
 import { getProduct } from "../../services/product/productService";
 import { useParams } from "react-router";
 import { getRelatedProducts } from "../../services/product/productService";
+import { Product as IProduct } from "../../interfaces";
 
-const Product = (props) => {
-  const [product, setProduct] = useState({});
+const Product = () => {
+  const [product, setProduct] = useState<IProduct>();
 
-  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [relatedProducts, setRelatedProducts] = useState<Array<IProduct>>([]);
 
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const loadSingleProduct = (productId) => {
+  const loadSingleProduct = (productId: string) => {
     getProduct(productId).then((data) => {
       if (data.error) {
         setError(data.error);
@@ -26,18 +27,14 @@ const Product = (props) => {
 
   const loadRelatedProducts = (productId) => {
     getRelatedProducts(productId).then((data) => {
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setRelatedProducts(data);
-      }
+      setRelatedProducts(data);
     });
   };
 
-  const { productId } = useParams();
+  const { productId } = useParams()!;
 
   useEffect(() => {
-    loadSingleProduct(productId);
+    loadSingleProduct(productId!);
   }, [productId]);
 
   return (

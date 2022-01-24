@@ -1,7 +1,13 @@
 import React from "react";
 import { API } from "../../config";
+import { Product } from "../../interfaces";
 
-const CardImage = ({ item, url }) => (
+interface CardImageProps {
+  item: Product;
+  url: string;
+}
+
+const CardImage = ({ item, url }: CardImageProps) => (
   <div className="product-img">
     <img
       src={`${API}/${url}/photo/${item._id}`}

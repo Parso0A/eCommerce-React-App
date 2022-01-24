@@ -1,6 +1,12 @@
 import React, { useState, useEffect, Fragment } from "react";
+import { PriceFilterItem } from "../../interfaces";
 
-const RadioBox = ({ prices, handleFilters }) => {
+interface RadioBoxProps {
+  prices: Array<PriceFilterItem>;
+  handleFilters: Function;
+}
+
+const RadioBox = ({ prices, handleFilters }: RadioBoxProps) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event) => {
@@ -18,7 +24,7 @@ const RadioBox = ({ prices, handleFilters }) => {
             value={`${item._id}`}
             type="radio"
             className="mx-1"
-            name={item}
+            name={"priceFilter"}
           />
           <label className="form-check-label">{item.name}</label>
         </div>

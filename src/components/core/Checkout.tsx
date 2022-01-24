@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Layout from "./Layout";
-import { getProducts } from "../../services/product/productService";
-import Card from "./Card";
+import { ProductInCart } from "../../interfaces";
 
-const Checkout = ({ products }) => {
-  const getTotal = () =>
+interface CheckoutProps {
+  products: Array<ProductInCart>;
+}
+
+const Checkout = ({ products }: CheckoutProps) => {
+  const getTotal = (): number =>
     products.reduce((currentValue, nextValue) => {
       return currentValue + nextValue.count * nextValue.price;
     }, 0);

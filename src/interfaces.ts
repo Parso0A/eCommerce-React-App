@@ -3,7 +3,11 @@ export interface Auth {
   password: string;
 }
 
-interface DbObject {
+export interface IRegister extends Auth {
+  name: string;
+}
+
+export interface DbObject {
   _id: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -18,6 +22,7 @@ export interface User extends DbObject {
 export interface AuthenticationContext {
   token: string;
   user: User;
+  error?: string;
 }
 
 export interface Product extends DbObject {
@@ -26,9 +31,10 @@ export interface Product extends DbObject {
   name: string;
   description: string;
   price: number;
-  category: string;
+  category: Category;
   quantity: number;
   shipping: boolean;
+  error?: string;
 }
 
 export interface ProductInCart extends Product {
@@ -59,12 +65,39 @@ export interface FilterProductsPayload {
   totalCount: number;
 }
 
-export interface ICreateProduct {
-  photo: any;
+export interface ICreateCategory {
   name: string;
-  category: string;
-  shipping: boolean;
-  description: string;
-  price: number;
-  quantity: number;
+}
+
+interface IProductsRootState {
+  bySale: Array<Product>;
+  byArrival: Array<Product>;
+  filteredProducts: IFilteredProductsState;
+  list: Array<Product>;
+}
+
+interface IFilteredProductsState {
+  data: Array<Product>;
+  currentFilter: ICurrentProductsFilter;
+  totalCount: number;
+  shouldReload: boolean;
+}
+
+interface ICurrentProductsFilter {
+  category: Array<string>;
+  price: [number, number] | [];
+}
+
+interface ICategoriesRootState {
+  list: Array<Category>;
+  loading: boolean;
+}
+
+interface IEntitiesRootState {
+  products: IProductsRootState;
+  categories: ICategoriesRootState;
+}
+
+export interface IRootState {
+  entities: IEntitiesRootState;
 }

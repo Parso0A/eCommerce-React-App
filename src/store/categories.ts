@@ -1,13 +1,5 @@
-import {
-  ActionCreatorWithoutPayload,
-  ActionCreatorWithPayload,
-  CaseReducer,
-  createSelector,
-  createSlice,
-  PayloadAction,
-} from "@reduxjs/toolkit";
-import { State } from "history";
-import { ApiRequestPayload, Category } from "../interfaces";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Category, ICreateCategory, IRootState } from "../interfaces";
 import { apiRequest } from "./api";
 
 const slice = createSlice({
@@ -46,11 +38,11 @@ const {
 export default slice.reducer;
 
 export const selectCategories = createSelector(
-  (state) => state.entities.categories.list,
-  (categories) => categories
+  (state: IRootState) => state.entities.categories.list,
+  (categories: Array<Category>) => categories
 );
 
-export const createCategory = (category: Category, userId: string) =>
+export const createCategory = (category: ICreateCategory, userId: string) =>
   apiRequest({
     url: `/category/create/${userId}`,
     method: "POST",

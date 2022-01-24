@@ -1,11 +1,8 @@
 import React, { Fragment } from "react";
-import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
-import {
-  isAuthenticated,
-  authenticate,
-  signOut,
-} from "../../services/auth/authService";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { isAuthenticated, signOut } from "../../services/auth/authService";
 import { totalCartQuantity } from "../../services/cart/cartService";
+import { NavigateFunction } from "react-router";
 
 const isActive = (location, path) => {
   if (location.pathname === path) {
@@ -26,7 +23,12 @@ const withRouter = (Component) => {
   return Wrapper;
 };
 
-const Menu = ({ location, navigate }) => {
+interface MenuProps {
+  location: Location;
+  navigate: NavigateFunction;
+}
+
+const Menu = ({ location, navigate }: MenuProps) => {
   const authenticated = isAuthenticated();
 
   return (
@@ -113,7 +115,7 @@ const Menu = ({ location, navigate }) => {
               className="nav-link"
               style={{ cursor: "pointer", color: "#ffffff" }}
               onClick={() => {
-                signOut(navigate("/"));
+                signOut(() => navigate("/"));
               }}
             >
               Sign Out

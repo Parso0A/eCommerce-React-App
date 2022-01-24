@@ -8,8 +8,16 @@ import {
   signIn,
 } from "../../services/auth/authService";
 
+interface SignInState {
+  email: string;
+  password: string;
+  error: string;
+  loading: boolean;
+  redirectToReferrer: boolean;
+}
+
 const Signin = () => {
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<SignInState>({
     email: "",
     password: "",
     error: "",
@@ -21,7 +29,7 @@ const Signin = () => {
 
   const { email, password, error, loading, redirectToReferrer } = values;
 
-  const handleChange = (name) => (event) => {
+  const handleChange = (name: string) => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };
 
@@ -92,7 +100,7 @@ const Signin = () => {
     if (redirectToReferrer) {
       return (
         <Navigate
-          to={user.role === 1 ? "/admin/dashboard" : "/user/dashboard"}
+          to={user?.role === 1 ? "/admin/dashboard" : "/user/dashboard"}
           replace={true}
         />
       );

@@ -16,7 +16,7 @@ const Home = () => {
   const productsBySale = useSelector(selectProductsBySale);
   const productsByArrival = useSelector(selectProductsByArrival);
 
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch(getProductsBySale());

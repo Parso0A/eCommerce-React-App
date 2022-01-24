@@ -1,7 +1,7 @@
 import { API } from "../../config";
-import { Auth, AuthenticationContext, User } from "../../interfaces";
+import { Auth, AuthenticationContext, IRegister, User } from "../../interfaces";
 
-export const signUp = (user: Auth) => {
+export const signUp = (user: IRegister) => {
   return fetch(`${API}/signup`, {
     method: "POST",
     headers: {
@@ -16,7 +16,7 @@ export const signUp = (user: Auth) => {
     .catch((err) => console.log(err));
 };
 
-export const signIn = (user: Auth): Promise<User> => {
+export const signIn = (user: Auth): Promise<AuthenticationContext> => {
   return fetch(`${API}/signin`, {
     method: "POST",
     headers: {
