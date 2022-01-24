@@ -16,6 +16,8 @@ const AddCategory = () => {
 
   const dispatch = useDispatch();
 
+  //#region EventHandlers
+
   const handleChanges = (event) => {
     setError("");
 
@@ -32,6 +34,12 @@ const AddCategory = () => {
     dispatch(createCategory({ name }, user._id));
   };
 
+  const handleFocus = () => {
+    setSuccess(false);
+  };
+
+  //#endregion
+
   const showSuccess = success ? (
     <div className="alert alert-info">
       <h3 className="text-success">Category created</h3>
@@ -47,10 +55,6 @@ const AddCategory = () => {
   ) : (
     ""
   );
-
-  const handleFocus = () => {
-    setSuccess(false);
-  };
 
   const goBack = (
     <div className="mt-5">

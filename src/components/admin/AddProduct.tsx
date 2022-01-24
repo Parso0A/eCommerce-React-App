@@ -64,6 +64,8 @@ const AddProduct = () => {
     init();
   }, []);
 
+  //#region EventHandlers
+
   const handleChanges = (name) => (event) => {
     const value = name === "photo" ? event.target.files[0] : event.target.value;
 
@@ -91,6 +93,8 @@ const AddProduct = () => {
       error: "",
     });
   };
+
+  //#endregion
 
   const showLoading = loading ? (
     <div className="alert alert-success">

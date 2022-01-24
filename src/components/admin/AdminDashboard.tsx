@@ -2,11 +2,10 @@ import React from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../../services/auth/authService";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const AdminDashboard = () => {
   const {
-    user: { _id, name, email, role },
+    user: { name, email, role },
   } = isAuthenticated()!;
 
   const adminLinks = (

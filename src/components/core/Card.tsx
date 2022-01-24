@@ -33,11 +33,7 @@ const Card = ({
     (product as ProductInCart)?.count ?? 0
   );
 
-  const viewProductButton = showViewProductButton && (
-    <Link to={`/product/${product._id}`}>
-      <button className="btn btn-outline-primary m-2">View Product</button>
-    </Link>
-  );
+  //#region EventHandlers
 
   const addToCart = () => {
     addItem(product, () => {
@@ -49,6 +45,28 @@ const Card = ({
       return <Navigate to={"/cart"} />;
     }
   };
+
+  const handleQuantityChange = (productId) => (event) => {
+    setCount(event.target.value < 1 ? 1 : event.target.value);
+
+    if (event.target.value >= 1) {
+      updateItemInCart(productId, event.target.value);
+      onCartItemChangeCallback();
+    }
+  };
+
+  const handleRemoveFromCart = () => {
+    removeItemFromCart(product._id);
+    onCartItemChangeCallback();
+  };
+
+  //#endregion
+
+  const viewProductButton = showViewProductButton && (
+    <Link to={`/product/${product._id}`}>
+      <button className="btn btn-outline-primary m-2">View Product</button>
+    </Link>
+  );
 
   const addToCartButton = shouldViewAddToCart ? (
     <button onClick={addToCart} className="btn btn-outline-warning m-2 ">
@@ -64,15 +82,6 @@ const Card = ({
     ) : (
       <span className="badge bg-danger rounded-pill">Out of Stock</span>
     );
-
-  const handleQuantityChange = (productId) => (event) => {
-    setCount(event.target.value < 1 ? 1 : event.target.value);
-
-    if (event.target.value >= 1) {
-      updateItemInCart(productId, event.target.value);
-      onCartItemChangeCallback();
-    }
-  };
 
   const cartUpdateOptions = (cartUpdate: boolean) =>
     cartUpdate && (
@@ -90,11 +99,6 @@ const Card = ({
         </div>
       </div>
     );
-
-  const handleRemoveFromCart = () => {
-    removeItemFromCart(product._id);
-    onCartItemChangeCallback();
-  };
 
   const removeProductButton = (showRemoveProductButton: boolean) =>
     showRemoveProductButton && (

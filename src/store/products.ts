@@ -3,9 +3,8 @@ import {
   createSelector,
   createSlice,
   PayloadAction,
-  Selector,
 } from "@reduxjs/toolkit";
-import { apiRequest, apiRequestFail } from "./api";
+import { apiRequest } from "./api";
 import queryString from "query-string";
 import { FilterProductsPayload, IRootState, Product } from "../interfaces";
 
@@ -68,6 +67,8 @@ const {
 
 export default slice.reducer;
 
+//Selectors
+
 export const selectProductsBySale = createSelector(
   (state: IRootState) => state.entities.products.bySale,
   (products: Array<Product>) => products
@@ -92,6 +93,8 @@ export const selectMainPageProducts = createSelector(
   (state: IRootState) => state.entities.products.list,
   (products: Array<Product>) => products
 );
+
+//Action Creators
 
 export const getProductsByArrival = () =>
   apiRequest({

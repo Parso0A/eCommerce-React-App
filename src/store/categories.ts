@@ -37,10 +37,14 @@ const {
 
 export default slice.reducer;
 
+//Selectors
+
 export const selectCategories = createSelector(
   (state: IRootState) => state.entities.categories.list,
   (categories: Array<Category>) => categories
 );
+
+//Action Creators
 
 export const createCategory = (category: ICreateCategory, userId: string) =>
   apiRequest({
