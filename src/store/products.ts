@@ -10,24 +10,26 @@ import {
   FilterProductsPayload,
   Product,
 } from "../global/models/product/product";
-import { IRootState } from "../global/models/common/store";
+import { IProductsRootState, IRootState } from "../global/models/common/store";
+
+const initialState: IProductsRootState = {
+  bySale: [],
+  byArrival: [],
+  filteredProducts: {
+    data: [],
+    currentFilter: {
+      category: [],
+      price: [],
+    },
+    totalCount: 0,
+    shouldReload: false,
+  },
+  list: [],
+};
 
 const slice = createSlice({
   name: "products",
-  initialState: {
-    bySale: [],
-    byArrival: [],
-    filteredProducts: {
-      data: [],
-      currentFilter: {
-        category: [],
-        price: [],
-      },
-      totalCount: 0,
-      shouldReload: false,
-    },
-    list: [],
-  },
+  initialState: initialState,
   reducers: {
     productsBySale: (state: any, action: PayloadAction<Array<Product>>) => {
       state.bySale = action.payload;

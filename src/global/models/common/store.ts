@@ -1,7 +1,7 @@
 import { Category } from "../category/category";
 import { Product } from "../product/product";
 
-interface ICategoriesRootState {
+export interface ICategoriesRootState {
   list: Array<Category>;
   loading: boolean;
 }
@@ -15,7 +15,7 @@ export interface IRootState {
   entities: IEntitiesRootState;
 }
 
-interface IProductsRootState {
+export interface IProductsRootState {
   bySale: Array<Product>;
   byArrival: Array<Product>;
   filteredProducts: IFilteredProductsState;

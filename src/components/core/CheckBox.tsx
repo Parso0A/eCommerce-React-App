@@ -32,6 +32,7 @@ const CheckBox = ({ categories, handleFilters }: CheckBoxProps) => {
               value={checked.indexOf(item._id) === -1 ? "false" : "true"}
               type="checkbox"
               className="form-check-input"
+              data-testid={`checkbox-${item._id}`}
             />
             <label className="form-check-label">{item.name}</label>
           </div>

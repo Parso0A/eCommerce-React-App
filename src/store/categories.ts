@@ -1,14 +1,19 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Category, ICreateCategory } from "../global/models/category/category";
-import { IRootState } from "../global/models/common/store";
+import {
+  ICategoriesRootState,
+  IRootState,
+} from "../global/models/common/store";
 import { apiRequest } from "./api";
+
+const initialState: ICategoriesRootState = {
+  list: [],
+  loading: false,
+};
 
 const slice = createSlice({
   name: "categories",
-  initialState: {
-    list: [],
-    loading: false,
-  },
+  initialState: initialState,
   reducers: {
     categoryCreated: (state: any, action: PayloadAction<Category>) => {
       state.list.push(action.payload);

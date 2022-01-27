@@ -95,10 +95,13 @@ const Search = () => {
             className={"form-control"}
             onChange={handleChange("searchTerm")}
             placeholder={"Search..."}
+            data-testid="home-search-input"
           />
         </div>
         <div className="btn input-group-append" style={{ border: "none" }}>
-          <button className="input-group-text">Search</button>
+          <button data-testid="home-search-submit" className="input-group-text">
+            Search
+          </button>
         </div>
       </span>
     </form>
