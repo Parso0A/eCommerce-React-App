@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
 import { useSelector, useDispatch } from "react-redux";
-import { getCategories, selectCategories } from "../../store/categories";
 import {
   getMainPageProducts,
   selectMainPageProducts,
 } from "../../store/products";
 import { Product } from "../../global/models/product/product";
+import useCategories from "../../hooks/useCategories";
 
 interface SearchFormState {
   selectedCategory: string;
@@ -25,17 +25,9 @@ const Search = () => {
 
   const dispatch = useDispatch();
 
-  const categories = useSelector(selectCategories);
-
-  const loadCategories = () => {
-    dispatch(getCategories());
-  };
+  const categories = useCategories();
 
   const result = useSelector(selectMainPageProducts);
-
-  useEffect(() => {
-    loadCategories();
-  }, []);
 
   const searchData = () => {
     if (!searched) {

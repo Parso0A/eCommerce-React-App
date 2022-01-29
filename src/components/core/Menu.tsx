@@ -32,8 +32,8 @@ const Menu = ({ location, navigate }: MenuProps) => {
   const authenticated = isAuthenticated();
 
   return (
-    <div>
-      <ul className="nav nav-tabs bg-primary">
+    <div className="bg-primary">
+      <ul className="nav nav-tabs flex-container">
         <li className="nav-item">
           <Link className="nav-link" style={isActive(location, "/")} to="/">
             Home
@@ -49,7 +49,7 @@ const Menu = ({ location, navigate }: MenuProps) => {
           </Link>
         </li>
 
-        <li className="nav-item">
+        <li className="nav-item nav-left-end">
           <Link
             className="nav-link"
             style={isActive(location, "/cart")}

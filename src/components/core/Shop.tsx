@@ -11,14 +11,14 @@ import {
   selectTotalCount,
 } from "../../store/products";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCategories, getCategories } from "../../store/categories";
+import useCategories from "../../hooks/useCategories";
 
 const Shop = () => {
   const dispatch = useDispatch();
 
-  const categories = useSelector(selectCategories);
-
   const products = useSelector(selectFilteredProducts);
+
+  const categories = useCategories();
 
   const totalCount = useSelector(selectTotalCount);
 
@@ -36,7 +36,6 @@ const Shop = () => {
   const [error, setError] = useState(false);
 
   const init = () => {
-    dispatch(getCategories());
     dispatch(setFilter({}));
     loadFilteredResults({});
   };

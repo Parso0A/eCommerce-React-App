@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../../services/auth/authService";
-import { getCategories, selectCategories } from "../../store/categories";
 import { createProduct } from "../../store/products";
 import { useSelector, useDispatch } from "react-redux";
+import useCategories from "../../hooks/useCategories";
 
 interface AddProductState {
   name: string;
@@ -23,7 +23,7 @@ interface AddProductState {
 const AddProduct = () => {
   const { user } = isAuthenticated()!;
 
-  const categories = useSelector(selectCategories);
+  const categories = useCategories();
 
   const dispatch = useDispatch();
 
@@ -55,14 +55,6 @@ const AddProduct = () => {
     redirectToProfile,
     formData,
   } = values;
-
-  const init = () => {
-    dispatch(getCategories());
-  };
-
-  useEffect(() => {
-    init();
-  }, []);
 
   //#region EventHandlers
 
